@@ -1,22 +1,37 @@
 {
-  "name": "CodeSage",
+  "name": "codesage",
   "displayName": "CodeSage",
   "description": "CodeSage is your AI mentor — it helps you understand and resolve errors by offering thoughtful suggestions, encouraging you to think instead of instantly solving everything for you.",
+  "publisher": "JagjeevanKashid",
   "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JagjeevanAK/CodeSage.git"
+  },
+  "homepage": "https://github.com/JagjeevanAK/CodeSage",
+  "bugs": {
+    "url": "https://github.com/JagjeevanAK/CodeSage/issues"
+  },
+  "keywords": [
+    "ai",
+    "code-review",
+    "error-analysis",
+    "debugging",
+    "code-assistant",
+    "artificial-intelligence",
+    "openai",
+    "anthropic",
+    "gemini"
+  ],
   "engines": {
     "vscode": "^1.102.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:CodeSage.setApiKey",
-    "onCommand:CodeSage.getApiKey",
-    "onCommand:CodeSage.deleteKey",
-    "onCommand:CodeSage.reviewCurrentFile"
-  ],
   "main": "./dist/extension.js",
-  "icon": "icon.png",
+  "icon": "./public/icon.png",
   "contributes": {
     "commands": [
       {
