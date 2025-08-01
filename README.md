@@ -1,74 +1,42 @@
 # CodeSage
-AI agent that guides humans instead of replacing them or coding on behalf of humans.
 
-# Under Development
-
-This is the README for your extension "CodeSage". After writing up a brief description, we recommend including the following sections.
+CodeSage is your AI mentor — it helps you understand and resolve errors by offering thoughtful suggestions, encouraging you to think instead of instantly solving everything for you.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- **AI-Powered Code Review**: Get intelligent code analysis and suggestions using multiple AI providers (OpenAI, Anthropic, Google Gemini, xAI)
+- **Interactive Webview**: View formatted AI responses with syntax highlighting in a dedicated panel
+- **Hover Assistance**: Get instant help for errors and code issues by hovering over problems
+- **Multi-Provider Support**: Choose from different AI models based on your preference and API availability
+- **Secure API Management**: Safely store and manage your API keys with built-in encryption
 
-For example if there is an image subfolder under your extension project workspace:
+## Setup
 
-\!\[feature X\]\(images/feature-x.png\)
+1. Install the extension
+2. Set your API key using `Ctrl+Shift+P` → "Set API Key for CodeSage"
+3. Start reviewing code with `Ctrl+Shift+P` → "Review Current File"
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Commands
+
+- `CodeSage: Set API Key` - Configure your AI provider API key
+- `CodeSage: Review Current File` - Get AI analysis of the current file
+- `CodeSage: Show Webview` - Open the CodeSage response panel
+- `CodeSage: Show API Key` - Display your current API key
+- `CodeSage: Delete API Key` - Remove stored API key
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- VS Code 1.102.0 or higher
+- API key from one of the supported AI providers (OpenAI, Anthropic, Google, xAI)
 
-## Extension Settings
+## Configuration
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+Configure CodeSage behavior in VS Code settings:
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+- `codeSage.webview.autoShow` - Automatically show webview for responses
+- `codeSage.webview.retainContext` - Keep webview state when hidden
+- `codeSage.webview.enableSyntaxHighlighting` - Enable code syntax highlighting
 
 ---
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+**Enjoy coding with AI assistance!**
