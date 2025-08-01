@@ -1,0 +1,179 @@
+{
+  "name": "CodeSage",
+  "displayName": "CodeSage",
+  "description": "CodeSage is your AI mentor — it helps you understand and resolve errors by offering thoughtful suggestions, encouraging you to think instead of instantly solving everything for you.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.102.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:CodeSage.setApiKey",
+    "onCommand:CodeSage.getApiKey",
+    "onCommand:CodeSage.deleteKey",
+    "onCommand:CodeSage.reviewCurrentFile"
+  ],
+  "main": "./dist/extension.js",
+  "icon": "icon.png",
+  "contributes": {
+    "commands": [
+      {
+        "command": "CodeSage.setApiKey",
+        "title": "Set API Key for CodeSage"
+      },
+      {
+        "command": "CodeSage.getApiKey",
+        "title": "Show API Key of CodeSage"
+      },
+      {
+        "command": "CodeSage.deleteKey",
+        "title": "Delete API Key of CodeSage"
+      },
+      {
+        "command": "CodeSage.reviewCurrentFile",
+        "title": "Review Current File with CodeSage"
+      },
+      {
+        "command": "CodeSage.showWebview",
+        "title": "Show CodeSage Webview"
+      },
+      {
+        "command": "CodeSage.hideWebview",
+        "title": "Hide CodeSage Webview"
+      },
+      {
+        "command": "CodeSage.refreshWebview",
+        "title": "Refresh CodeSage Webview"
+      },
+      {
+        "command": "CodeSage.clearWebview",
+        "title": "Clear CodeSage Webview"
+      },
+      {
+        "command": "CodeSage.showWebviewHistory",
+        "title": "Show CodeSage Webview History"
+      },
+      {
+        "command": "CodeSage.webviewHealthCheck",
+        "title": "CodeSage Webview Health Check"
+      },
+      {
+        "command": "CodeSage.showErrorLog",
+        "title": "Show CodeSage Error Log"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "editorTextFocus",
+          "command": "CodeSage.reviewCurrentFile",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "CodeSage.showWebview",
+          "when": "true"
+        },
+        {
+          "command": "CodeSage.hideWebview",
+          "when": "true"
+        },
+        {
+          "command": "CodeSage.refreshWebview",
+          "when": "true"
+        },
+        {
+          "command": "CodeSage.clearWebview",
+          "when": "true"
+        },
+        {
+          "command": "CodeSage.showWebviewHistory",
+          "when": "true"
+        },
+        {
+          "command": "CodeSage.webviewHealthCheck",
+          "when": "true"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "CodeSage",
+      "properties": {
+        "CodeSage.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key for CodeSage AI explanations",
+          "scope": "application"
+        },
+        "CodeSage.model": {
+          "type": "string",
+          "default": "",
+          "description": "AI model to use for explanations",
+          "scope": "application"
+        },
+        "CodeSage.useWebview": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable webview for AI responses"
+        },
+        "CodeSage.webviewPosition": {
+          "type": "string",
+          "enum": ["beside", "active", "one", "two", "three"],
+          "default": "beside",
+          "description": "Position where webview should open"
+        },
+        "CodeSage.webviewRetainContext": {
+          "type": "boolean",
+          "default": true,
+          "description": "Keep webview content when hidden"
+        },
+        "CodeSage.webviewAutoShow": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically show webview when AI responses are generated"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run package",
+    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/highlight.js": "^10.1.0",
+    "@types/markdown-it": "^14.1.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.102.0",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2",
+    "esbuild": "^0.25.3",
+    "eslint": "^9.25.1",
+    "highlight.js": "^11.11.1",
+    "markdown-it": "^14.1.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^1.2.12",
+    "@ai-sdk/google": "^1.2.22",
+    "@ai-sdk/openai": "^1.3.23",
+    "@ai-sdk/xai": "^1.2.18",
+    "ai": "^4.3.19"
+  }
+}
