@@ -63,7 +63,7 @@ suite('HtmlTemplateSystem Test Suite', () => {
             assert.ok(result.includes('test.js'));
             assert.ok(result.includes('2024-01-01 12:00:00'));
             assert.ok(result.includes('<p>Test content</p>'));
-            assert.ok(result.includes('CodeSage AI Response')); // default title
+            assert.ok(result.includes('DebugBuddy AI Response')); // default title
         });
 
         test('should render template with custom options', () => {
@@ -127,7 +127,7 @@ suite('HtmlTemplateSystem Test Suite', () => {
             const result = templateSystem.renderTemplate(templateData);
 
             assert.ok(result.includes('<!DOCTYPE html>'));
-            assert.ok(result.includes('CodeSage Code Review'));
+            assert.ok(result.includes('DebugBuddy Code Review'));
             // Should still be valid HTML even with empty data
         });
     });

@@ -18,7 +18,7 @@ export class WebviewProvider implements IWebviewProvider {
     private markdownRenderer: MarkdownRenderer;
     private htmlTemplateSystem: HtmlTemplateSystem;
     private themeManager: ThemeManager;
-    private static readonly viewType = 'CodeSageResponse';
+    private static readonly viewType = 'DebugBuddyResponse';
     private webviewManager?: any; // Will be set by WebviewManager
     private themeChangeDisposable?: vscode.Disposable;
     private lastContent?: { content: string; fileName: string };
@@ -52,7 +52,7 @@ export class WebviewProvider implements IWebviewProvider {
             }
 
             // Create new webview panel
-            const config = vscode.workspace.getConfiguration('CodeSage');
+            const config = vscode.workspace.getConfiguration('DebugBuddy');
             const webviewPosition = config.get<string>('webviewPosition', 'beside');
             const retainContext = config.get<boolean>('webviewRetainContext', true);
             
@@ -78,7 +78,7 @@ export class WebviewProvider implements IWebviewProvider {
 
             this.panel = vscode.window.createWebviewPanel(
                 WebviewProvider.viewType,
-                'CodeSage AI Response',
+                'DebugBuddy AI Response',
                 viewColumn,
                 {
                     enableScripts: true,
@@ -157,14 +157,14 @@ export class WebviewProvider implements IWebviewProvider {
             };
             
             const templateOptions: TemplateOptions = {
-                title: renderResult.hasErrors ? 'CodeSage AI Response (with errors)' : 'CodeSage AI Response',
+                title: renderResult.hasErrors ? 'DebugBuddy AI Response (with errors)' : 'DebugBuddy AI Response',
                 enableScripts: true,
                 themeConfiguration: this.themeManager.getCurrentTheme()
             };
             
             // Log rendering errors if any and enhance error display
             if (renderResult.hasErrors) {
-                console.warn('CodeSage: Content rendering errors:', renderResult.errors);
+                console.warn('DebugBuddy: Content rendering errors:', renderResult.errors);
                 this.errorLogger.logError('renderMarkdown', new Error(renderResult.errors.join(', ')), false, {
                     fileName,
                     contentLength: content.length,
@@ -174,7 +174,7 @@ export class WebviewProvider implements IWebviewProvider {
                 // Show user notification for severe content errors
                 if (renderResult.errors.some(error => error.includes('parsing error'))) {
                     vscode.window.showWarningMessage(
-                        'CodeSage: Content parsing issues detected. Some formatting may not display correctly.',
+                        'DebugBuddy: Content parsing issues detected. Some formatting may not display correctly.',
                         'Show Error Details'
                     ).then(selection => {
                         if (selection === 'Show Error Details') {

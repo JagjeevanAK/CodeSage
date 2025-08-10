@@ -21,7 +21,7 @@ export interface IHtmlTemplateSystem {
 }
 
 export class HtmlTemplateSystem implements IHtmlTemplateSystem {
-    private readonly defaultTitle = 'CodeSage AI Response';
+    private readonly defaultTitle = 'DebugBuddy AI Response';
     private themeManager: ThemeManager;
     
     constructor() {
@@ -71,7 +71,7 @@ export class HtmlTemplateSystem implements IHtmlTemplateSystem {
 </head>
 <body>
     <div class="header">
-        <h1>CodeSage Code Review</h1>
+        <h1>DebugBuddy Code Review</h1>
         <div class="file-info">
             <span class="filename">{{fileName}}</span>
             <span class="timestamp">{{timestamp}}</span>

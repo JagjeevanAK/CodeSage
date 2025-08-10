@@ -1,6 +1,6 @@
-# CodeSage
+# DebugBuddy
 
-CodeSage is your AI mentor — it helps you understand and resolve errors by offering thoughtful suggestions, encouraging you to think instead of instantly solving everything for you.
+DebugBuddy is your AI mentor — it helps you understand and resolve errors by offering thoughtful suggestions, encouraging you to think instead of instantly solving everything for you.
 
 ## Features
 
@@ -13,16 +13,16 @@ CodeSage is your AI mentor — it helps you understand and resolve errors by off
 ## Setup
 
 1. Install the extension
-2. Set your API key using `Ctrl+Shift+P` → "Set API Key for CodeSage"
+2. Set your API key using `Ctrl+Shift+P` → "Set API Key for DebugBuddy"
 3. Start reviewing code with `Ctrl+Shift+P` → "Review Current File"
 
 ## Commands
 
-- `CodeSage: Set API Key` - Configure your AI provider API key
-- `CodeSage: Review Current File` - Get AI analysis of the current file
-- `CodeSage: Show Webview` - Open the CodeSage response panel
-- `CodeSage: Show API Key` - Display your current API key
-- `CodeSage: Delete API Key` - Remove stored API key
+- `DebugBuddy: Set API Key` - Configure your AI provider API key
+- `DebugBuddy: Review Current File` - Get AI analysis of the current file
+- `DebugBuddy: Show Webview` - Open the DebugBuddy response panel
+- `DebugBuddy: Show API Key` - Display your current API key
+- `DebugBuddy: Delete API Key` - Remove stored API key
 
 ## Requirements
 
@@ -31,11 +31,11 @@ CodeSage is your AI mentor — it helps you understand and resolve errors by off
 
 ## Configuration
 
-Configure CodeSage behavior in VS Code settings:
+Configure DebugBuddy behavior in VS Code settings:
 
-- `codeSage.webview.autoShow` - Automatically show webview for responses
-- `codeSage.webview.retainContext` - Keep webview state when hidden
-- `codeSage.webview.enableSyntaxHighlighting` - Enable code syntax highlighting
+- `debugBuddy.webview.autoShow` - Automatically show webview for responses
+- `debugBuddy.webview.retainContext` - Keep webview state when hidden
+- `debugBuddy.webview.enableSyntaxHighlighting` - Enable code syntax highlighting
 
 ---
 

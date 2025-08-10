@@ -27,7 +27,7 @@ suite('getApiKey Function Tests', () => {
         // Mock vscode.workspace.getConfiguration
         const originalGetConfiguration = vscode.workspace.getConfiguration;
         vscode.workspace.getConfiguration = (section?: string) => {
-            if (section === 'CodeSage') {
+            if (section === 'DebugBuddy') {
                 return mockConfig as any;
             }
             return originalGetConfiguration(section);
@@ -70,7 +70,7 @@ suite('getApiKey Function Tests', () => {
 
         const originalGetConfiguration = vscode.workspace.getConfiguration;
         vscode.workspace.getConfiguration = (section?: string) => {
-            if (section === 'CodeSage') {
+            if (section === 'DebugBuddy') {
                 return mockConfig as any;
             }
             return originalGetConfiguration(section);
@@ -101,7 +101,7 @@ suite('getApiKey Function Tests', () => {
 
         const originalGetConfiguration = vscode.workspace.getConfiguration;
         vscode.workspace.getConfiguration = (section?: string) => {
-            if (section === 'CodeSage') {
+            if (section === 'DebugBuddy') {
                 return mockConfig as any;
             }
             return originalGetConfiguration(section);
@@ -132,7 +132,7 @@ suite('getApiKey Function Tests', () => {
 
         const originalGetConfiguration = vscode.workspace.getConfiguration;
         vscode.workspace.getConfiguration = (section?: string) => {
-            if (section === 'CodeSage') {
+            if (section === 'DebugBuddy') {
                 return mockConfig as any;
             }
             return originalGetConfiguration(section);
@@ -173,7 +173,7 @@ suite('getApiKey Function Tests', () => {
 
         const originalGetConfiguration = vscode.workspace.getConfiguration;
         vscode.workspace.getConfiguration = (section?: string) => {
-            if (section === 'CodeSage') {
+            if (section === 'DebugBuddy') {
                 return mockConfig as any;
             }
             return originalGetConfiguration(section);

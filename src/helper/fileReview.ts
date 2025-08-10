@@ -1,15 +1,21 @@
-import { modelFileReview } from "../lib/modelFileReview";
-import { CodeSageOutputChannel } from "./cannel";
+import { modelFileReview, modelFileReviewWithPrompt } from "../lib/modelFileReview";
+import { DebugBuddyOutputChannel } from "./cannel";
 import { getLanguageFromExtension, getLanguageFromVSCode } from "./getlang";
 import { displayReview } from "./terminalDisplay";
 import { vscode } from "./vscode";
 import { webviewManager } from "../webview/WebviewManager";
+import { PromptManager } from "../prompt/PromptManager";
+import { UserAction, CodeContext } from "../prompt/types";
 
 type TextEditor = typeof vscode.window.activeTextEditor;
 
+/**
+ * Enhanced file review function that uses the new JSON prompt system
+ * for comprehensive code analysis and review
+ */
 export const reviewFile = async (editor: TextEditor) => {
     if (!editor) {
-        vscode.window.showErrorMessage('CodeSage: No active editor found.');
+        vscode.window.showErrorMessage('DebugBuddy: No active editor found.');
         return;
     }
 
@@ -43,26 +49,29 @@ export const reviewFile = async (editor: TextEditor) => {
 
     vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
-        title: `CodeSage is reviewing your ${fileLanguage} code...`,
+        title: `DebugBuddy is reviewing your ${fileLanguage} code...`,
         cancellable: false
     }, async () => {
-
-        const reviewData = {
-            code: code,
-            fileName: fileName,
-            fileLanguage: fileLanguage,
-            timestamp: new Date().toISOString()
-        };
-
         try {
-            const response = await modelFileReview(reviewData);
+            let response;
             
-            // Try to display in webview first, with automatic fallback to terminal
+            // Use the enhanced file review with new prompt system
+            const codeContext: CodeContext = {
+                selectedText: code,
+                fullText: code,
+                filePath: fileName,
+                language: fileLanguage
+            };
+
+            // Use the enhanced function with JSON prompt system
+            response = await modelFileReviewWithPrompt(codeContext);
+            
+            // Display the review results
             try {
                 displayReview(response, fileName);
             } catch (displayError) {
-                console.error('CodeSage: Error displaying review, attempting fallback:', displayError);
-                // Force terminal display as fallback
+                console.error('DebugBuddy: Error displaying review, using terminal display:', displayError);
+                // Use terminal display as alternative
                 displayReview(response, fileName);
             }
 
@@ -70,9 +79,9 @@ export const reviewFile = async (editor: TextEditor) => {
             console.error('Code review error:', error);
             
             // For errors, always use terminal display to ensure visibility
-            CodeSageOutputChannel.appendLine(`Failed to get code review for ${fileLanguage} file`);
-            CodeSageOutputChannel.show(true);
-            vscode.window.showErrorMessage('CodeSage: Failed to get code review. Check your connection and API key.');
+            DebugBuddyOutputChannel.appendLine(`Failed to get code review for ${fileLanguage} file: ${error}`);
+            DebugBuddyOutputChannel.show(true);
+            vscode.window.showErrorMessage('DebugBuddy: Failed to get code review. Check your connection and API key.');
         }
     });
 };

@@ -26,7 +26,7 @@ suite('Configuration Change Handler Tests', () => {
 
     // Mock configuration change event
     const mockEvent: vscode.ConfigurationChangeEvent = {
-      affectsConfiguration: (section: string) => section === 'CodeSage.apiKey'
+      affectsConfiguration: (section: string) => section === 'DebugBuddy.apiKey'
     };
 
     // Mock the workspace configuration
@@ -55,7 +55,7 @@ suite('Configuration Change Handler Tests', () => {
 
     // Mock configuration change event for different setting
     const mockEvent: vscode.ConfigurationChangeEvent = {
-      affectsConfiguration: (section: string) => section === 'CodeSage.otherSetting'
+      affectsConfiguration: (section: string) => section === 'DebugBuddy.otherSetting'
     };
 
     // Trigger configuration change
@@ -72,7 +72,7 @@ suite('Configuration Change Handler Tests', () => {
 
     // Mock configuration change event
     const mockEvent: vscode.ConfigurationChangeEvent = {
-      affectsConfiguration: (section: string) => section === 'CodeSage.apiKey'
+      affectsConfiguration: (section: string) => section === 'DebugBuddy.apiKey'
     };
 
     // Mock the workspace configuration with undefined API key
@@ -136,7 +136,7 @@ suite('Configuration Change Handler Tests', () => {
 
     // Mock configuration change event
     const mockEvent: vscode.ConfigurationChangeEvent = {
-      affectsConfiguration: (section: string) => section === 'CodeSage.apiKey'
+      affectsConfiguration: (section: string) => section === 'DebugBuddy.apiKey'
     };
 
     // Mock the workspace configuration
@@ -173,7 +173,7 @@ suite('Configuration Change Handler Tests', () => {
 
     // Mock configuration change event
     const mockEvent: vscode.ConfigurationChangeEvent = {
-      affectsConfiguration: (section: string) => section === 'CodeSage.apiKey'
+      affectsConfiguration: (section: string) => section === 'DebugBuddy.apiKey'
     };
 
     // Mock the workspace configuration to throw error
@@ -211,5 +211,146 @@ suite('Configuration Change Handler Tests', () => {
     assert.doesNotThrow(() => {
       configChangeHandler.initialize();
     });
+  });
+
+  test('should handle prompt configuration changes', () => {
+    // Initialize the handler
+    configChangeHandler.initialize();
+
+    // Mock configuration change event for prompt settings
+    const mockEvent: vscode.ConfigurationChangeEvent = {
+      affectsConfiguration: (section: string) => section === 'DebugBuddy.prompts'
+    };
+
+    // Mock the workspace configuration
+    const originalGetConfiguration = vscode.workspace.getConfiguration;
+    vscode.workspace.getConfiguration = (section?: string) => ({
+      get: (key: string, defaultValue?: any) => {
+        const mockValues: Record<string, any> = {
+          'prompts.experienceLevel': 'intermediate',
+          'prompts.maxSuggestions': 5,
+          'prompts.includeExplanations': true,
+          'prompts.customFocusAreas': [],
+          'prompts.outputVerbosity': 'standard',
+          'prompts.enablePromptSystem': true,
+          'prompts.directory': '',
+          'prompts.cachePrompts': true,
+          'prompts.configs': {}
+        };
+        return mockValues[key] ?? defaultValue;
+      },
+      has: () => true,
+      inspect: () => undefined,
+      update: () => Promise.resolve()
+    } as any);
+
+    // Should not throw when handling prompt configuration changes
+    assert.doesNotThrow(() => {
+      configChangeHandler.onConfigurationChanged(mockEvent);
+    });
+
+    // Restore original function
+    vscode.workspace.getConfiguration = originalGetConfiguration;
+  });
+
+  test('should register and notify prompt configuration listeners', () => {
+    let listenerCalled = false;
+    let receivedSettings: any = null;
+
+    // Register a listener
+    const disposable = configChangeHandler.onPromptConfigurationChange((settings) => {
+      listenerCalled = true;
+      receivedSettings = settings;
+    });
+
+    // Initialize the handler
+    configChangeHandler.initialize();
+
+    // Mock configuration change event for prompt settings
+    const mockEvent: vscode.ConfigurationChangeEvent = {
+      affectsConfiguration: (section: string) => section === 'DebugBuddy.prompts'
+    };
+
+    // Mock the workspace configuration
+    const originalGetConfiguration = vscode.workspace.getConfiguration;
+    vscode.workspace.getConfiguration = (section?: string) => ({
+      get: (key: string, defaultValue?: any) => {
+        const mockValues: Record<string, any> = {
+          'prompts.experienceLevel': 'advanced',
+          'prompts.maxSuggestions': 10,
+          'prompts.includeExplanations': false,
+          'prompts.customFocusAreas': ['performance'],
+          'prompts.outputVerbosity': 'detailed',
+          'prompts.enablePromptSystem': true,
+          'prompts.directory': '',
+          'prompts.cachePrompts': true,
+          'prompts.configs': {}
+        };
+        return mockValues[key] ?? defaultValue;
+      },
+      has: () => true,
+      inspect: () => undefined,
+      update: () => Promise.resolve()
+    } as any);
+
+    // Trigger configuration change
+    configChangeHandler.onConfigurationChanged(mockEvent);
+
+    // Verify listener was called with correct settings
+    assert.strictEqual(listenerCalled, true);
+    assert.ok(receivedSettings !== null);
+    assert.strictEqual(receivedSettings.experienceLevel, 'advanced');
+    assert.strictEqual(receivedSettings.maxSuggestions, 10);
+    assert.strictEqual(receivedSettings.includeExplanations, false);
+
+    // Clean up
+    disposable.dispose();
+    vscode.workspace.getConfiguration = originalGetConfiguration;
+  });
+
+  test('should handle errors in prompt configuration listeners', () => {
+    // Register a listener that throws an error
+    const disposable = configChangeHandler.onPromptConfigurationChange(() => {
+      throw new Error('Test listener error');
+    });
+
+    // Initialize the handler
+    configChangeHandler.initialize();
+
+    // Mock configuration change event
+    const mockEvent: vscode.ConfigurationChangeEvent = {
+      affectsConfiguration: (section: string) => section === 'DebugBuddy.prompts'
+    };
+
+    // Mock the workspace configuration
+    const originalGetConfiguration = vscode.workspace.getConfiguration;
+    vscode.workspace.getConfiguration = (section?: string) => ({
+      get: (key: string, defaultValue?: any) => {
+        const mockValues: Record<string, any> = {
+          'prompts.experienceLevel': 'intermediate',
+          'prompts.maxSuggestions': 5,
+          'prompts.includeExplanations': true,
+          'prompts.customFocusAreas': [],
+          'prompts.outputVerbosity': 'standard',
+          'prompts.enablePromptSystem': true,
+          'prompts.directory': '',
+          'prompts.cachePrompts': true,
+          'prompts.configs': {}
+        };
+        return mockValues[key] ?? defaultValue;
+      },
+      has: () => true,
+      inspect: () => undefined,
+      update: () => Promise.resolve()
+    } as any);
+
+    // Should not throw even when listener throws
+    assert.doesNotThrow(() => {
+      configChangeHandler.onConfigurationChanged(mockEvent);
+    });
+
+    // Clean up
+    disposable.dispose();
+    vscode.workspace.getConfiguration = originalGetConfiguration;
   });
 });

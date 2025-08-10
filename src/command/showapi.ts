@@ -1,6 +1,7 @@
-import { vscode } from "../helper/vscode";
-import { getApiKey } from "../lib/getapi";
-export const showApiKey = vscode.commands.registerCommand('CodeSage.getApiKey', async () => {
+import * as vscode from 'vscode';
+import { getApiKey } from '../lib/getapi';
+
+export const showApiKey = vscode.commands.registerCommand('DebugBuddy.getApiKey', async () => {
     const apiKey = await getApiKey();
 
     if (apiKey) {
@@ -11,7 +12,7 @@ export const showApiKey = vscode.commands.registerCommand('CodeSage.getApiKey', 
             'Set API Key'
         );
         if (action === 'Set API Key') {
-            vscode.commands.executeCommand('CodeSage.setApiKey');
+            vscode.commands.executeCommand('DebugBuddy.setApiKey');
         }
     }
 });

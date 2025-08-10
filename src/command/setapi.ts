@@ -1,11 +1,13 @@
-import { vscode } from "../helper/vscode";
-import explanationCache from "../helper/store";
+import * as vscode from 'vscode';
+import { getApiKey } from '../lib/getapi';
+import { getModel } from '../lib/getmodel';
 
-export const setApiKey = vscode.commands.registerCommand('CodeSage.setApiKey', async () => {
+export const setApiKey = vscode.commands.registerCommand('DebugBuddy.setApiKey', async () => {
 
     const options = [
         "Anthropic",
-        "Gemeni",
+        "Gemini",
+        "Groq",
         "OpenAI",
         "Xai"
     ];
@@ -17,7 +19,7 @@ export const setApiKey = vscode.commands.registerCommand('CodeSage.setApiKey', a
         vscode.window.showWarningMessage("API provider selection cancelled.");
         return;
     } else {
-        await vscode.workspace.getConfiguration('CodeSage').update('model', selection, vscode.ConfigurationTarget.Global);
+        await vscode.workspace.getConfiguration('DebugBuddy').update('model', selection, vscode.ConfigurationTarget.Global);
     }
 
     const apikey = await vscode.window.showInputBox({
@@ -36,9 +38,8 @@ export const setApiKey = vscode.commands.registerCommand('CodeSage.setApiKey', a
     });
     if (apikey) {
         console.log(apikey);
-        await vscode.workspace.getConfiguration('CodeSage').update('apiKey', apikey, vscode.ConfigurationTarget.Global);
+        await vscode.workspace.getConfiguration('DebugBuddy').update('apiKey', apikey, vscode.ConfigurationTarget.Global);
         vscode.window.showInformationMessage('API key stored successfully!');
-        explanationCache?.clear();
     } else {
         vscode.window.showErrorMessage('API key input was cancelled or is invalid.');
     }

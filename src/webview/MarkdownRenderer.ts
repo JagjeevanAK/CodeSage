@@ -23,20 +23,64 @@ export class MarkdownRenderer implements IMarkdownRenderer {
       html: true,
       linkify: true,
       typographer: true,
-      highlight: this.highlightCode.bind(this),
+      highlight: () => '', // Disable highlighting completely
     });
+
+    // Customize inline code rendering
+    this.md.renderer.rules.code_inline = (tokens, idx) => {
+      const token = tokens[idx];
+      const content = this.md.utils.escapeHtml(token.content);
+      return `<code class="inline">${content}</code>`;
+    };
+
+    // Customize fence rendering to include detected language
+    this.md.renderer.rules.fence = (tokens, idx, options, env, renderer) => {
+      const token = tokens[idx];
+      const info = token.info ? this.md.utils.unescapeAll(token.info).trim() : '';
+      let langName = '';
+      
+      if (info) {
+        langName = info.split(/\s+/g)[0];
+      } else {
+        // Auto-detect language if not specified
+        langName = this.detectLanguage(token.content);
+      }
+      
+      // Don't use the highlight function - just escape the content
+      const content = this.md.utils.escapeHtml(token.content);
+      return `<pre><code class="language-${langName}">${content}</code></pre>\n`;
+    };
   }
 
   public renderMarkdown(content: string): string {
     try {
       if (!this.validateBasicContent(content)) {
-        return this.renderErrorContent('Invalid or empty content provided');
+        return '<p><em>No content to display</em></p>';
       }
-      return this.md.render(content);
+      
+      // Auto-detect language for code blocks without language specification
+      const processedContent = this.preprocessCodeBlocks(content);
+      return this.md.render(processedContent);
     } catch (error) {
-      console.error('CodeSage: Markdown rendering error:', error);
+      console.error('DebugBuddy: Markdown rendering error:', error);
       return this.renderErrorContent(`Markdown rendering failed: ${(error as Error).message}`);
     }
+  }
+
+  public addSyntaxHighlighting(html: string): string {
+    // Add highlighting class to code blocks and apply syntax highlighting
+    return html.replace(
+      /<code class="language-(\w+)"([^>]*)>/g,
+      '<code class="language-$1 highlighted"$2>'
+    ).replace(
+      /<code class="hljs ([^"]*)">/g,
+      '<code class="hljs $1 highlighted">'
+    );
+  }
+
+  public applyTheme(html: string): string {
+    // Theme is handled by CSS, so return input unchanged
+    return html;
   }
 
   public validateContent(content: string): ContentValidationResult {
@@ -138,26 +182,87 @@ export class MarkdownRenderer implements IMarkdownRenderer {
     `;
   }
 
-  private highlightCode(str: string, lang: string): string {
-    try {
-      if (lang && hljs.getLanguage(lang)) {
-        return (
-          '<pre><code class="hljs ' +
-          lang +
-          '">' +
-          hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
-          '</code></pre>'
-        );
-      }
-    } catch (error) {
-      console.warn('CodeSage: Syntax highlighting failed for language:', lang, error);
-      // Fall through to safe rendering
-    }
+  private preprocessCodeBlocks(content: string): string {
+    // Auto-detect language for code blocks without language specification
+    return content.replace(/```\n([\s\S]*?)\n```/g, (match, code) => {
+      const detectedLang = this.detectLanguage(code);
+      return `\`\`\`${detectedLang}\n${code}\n\`\`\``;
+    });
+  }
 
-    return (
-      '<pre><code class="hljs">' +
-      this.md.utils.escapeHtml(str) +
-      '</code></pre>'
-    );
+  private detectLanguage(code: string): string {
+    const trimmedCode = code.trim();
+    
+    // JavaScript detection
+    if (/\b(function|const|let|var|console\.log|=>)\b/.test(trimmedCode)) {
+      return 'javascript';
+    }
+    
+    // TypeScript detection
+    if (/\b(interface|type|string|number|boolean)\b/.test(trimmedCode) || 
+        /:\s*(string|number|boolean)/.test(trimmedCode)) {
+      return 'typescript';
+    }
+    
+    // Python detection
+    if (/\b(def|class|import|from|print)\b/.test(trimmedCode) || 
+        /:\s*$/.test(trimmedCode.split('\n')[0])) {
+      return 'python';
+    }
+    
+    // Java detection
+    if (/\b(public|private|class|static|void|System\.out\.println)\b/.test(trimmedCode) ||
+        (/\bclass\b/.test(trimmedCode) && /\bpublic\b/.test(trimmedCode))) {
+      return 'java';
+    }
+    
+    // HTML detection
+    if (/<\/?[a-z][\s\S]*>/i.test(trimmedCode) || /<!DOCTYPE/i.test(trimmedCode)) {
+      return 'html';
+    }
+    
+    // CSS detection
+    if (/[.#][\w-]+\s*\{/.test(trimmedCode) || /[\w-]+:\s*[\w-]+;/.test(trimmedCode)) {
+      return 'css';
+    }
+    
+    // JSON detection
+    if (/^\s*[\{\[]/.test(trimmedCode) && /[\}\]]\s*$/.test(trimmedCode)) {
+      try {
+        JSON.parse(trimmedCode);
+        return 'json';
+      } catch {
+        // Not valid JSON
+      }
+    }
+    
+    // SQL detection
+    if (/\b(SELECT|INSERT|UPDATE|DELETE|CREATE|ALTER|DROP)\b/i.test(trimmedCode)) {
+      return 'sql';
+    }
+    
+    // Bash detection
+    if (/^#!/.test(trimmedCode) || /\b(echo|ls|cd|mkdir|rm|grep)\b/.test(trimmedCode)) {
+      return 'bash';
+    }
+    
+    // YAML detection
+    if (/^[\w-]+:\s*/.test(trimmedCode) || /^\s*-\s+/.test(trimmedCode)) {
+      return 'yaml';
+    }
+    
+    // Default to text if no language detected
+    return 'text';
+  }
+
+  private highlightCode(str: string, lang: string): string {
+    // If no language specified, try to detect it
+    if (!lang) {
+      lang = this.detectLanguage(str);
+    }
+    
+    // Return escaped content without syntax highlighting
+    // The addSyntaxHighlighting method will handle the actual highlighting
+    return this.md.utils.escapeHtml(str);
   }
 }

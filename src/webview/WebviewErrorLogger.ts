@@ -25,7 +25,7 @@ export class WebviewErrorLogger {
     private outputChannel: vscode.OutputChannel;
 
     private constructor() {
-        this.outputChannel = vscode.window.createOutputChannel('CodeSage Webview Errors');
+        this.outputChannel = vscode.window.createOutputChannel('DebugBuddy Webview Errors');
     }
 
     public static getInstance(): WebviewErrorLogger {
@@ -56,9 +56,9 @@ export class WebviewErrorLogger {
         this.logToOutputChannel(webviewError);
 
         // Log to console for development
-        console.error(`CodeSage Webview Error [${operation}]:`, error);
+        console.error(`DebugBuddy Webview Error [${operation}]:`, error);
         if (fallbackUsed) {
-            console.warn('CodeSage: Fallback to terminal display was used');
+            console.warn('DebugBuddy: Fallback to terminal display was used');
         }
     }
 

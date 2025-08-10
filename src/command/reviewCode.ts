@@ -1,7 +1,7 @@
-import { reviewFile } from "../helper/fileReview";
-import { vscode } from "../helper/vscode";
+import * as vscode from 'vscode';
+import { reviewFile } from '../helper/fileReview';
 
-export const reviewCode = vscode.commands.registerCommand('CodeSage.reviewCurrentFile', async () => {
+export const reviewCode = vscode.commands.registerCommand('DebugBuddy.reviewCurrentFile', async () => {
     const activeEditor = vscode.window.activeTextEditor;
 
     if (!activeEditor) {

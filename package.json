@@ -1,17 +1,17 @@
 {
-  "name": "codesage",
-  "displayName": "CodeSage",
-  "description": "CodeSage is your AI mentor — it helps you understand and resolve errors by offering thoughtful suggestions, encouraging you to think instead of instantly solving everything for you.",
+  "name": "debugbuddy",
+  "displayName": "Debug Buddy",
+  "description": "Debug Buddy is your AI mentor — it helps you understand and resolve errors by offering thoughtful suggestions, encouraging you to think instead of instantly solving everything for you.",
   "publisher": "JagjeevanKashid",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JagjeevanAK/CodeSage.git"
+    "url": "https://github.com/JagjeevanAK/DebugBuddy.git"
   },
-  "homepage": "https://github.com/JagjeevanAK/CodeSage",
+  "homepage": "https://github.com/JagjeevanAK/DebugBuddy",
   "bugs": {
-    "url": "https://github.com/JagjeevanAK/CodeSage/issues"
+    "url": "https://github.com/JagjeevanAK/DebugBuddy/issues"
   },
   "keywords": [
     "ai",
@@ -35,120 +35,224 @@
   "contributes": {
     "commands": [
       {
-        "command": "CodeSage.setApiKey",
-        "title": "Set API Key for CodeSage"
+        "command": "DebugBuddy.setApiKey",
+        "title": "Set API Key for DebugBuddy"
       },
       {
-        "command": "CodeSage.getApiKey",
-        "title": "Show API Key of CodeSage"
+        "command": "DebugBuddy.getApiKey",
+        "title": "Show API Key of DebugBuddy"
       },
       {
-        "command": "CodeSage.deleteKey",
-        "title": "Delete API Key of CodeSage"
+        "command": "DebugBuddy.deleteKey",
+        "title": "Delete API Key of DebugBuddy"
       },
       {
-        "command": "CodeSage.reviewCurrentFile",
-        "title": "Review Current File with CodeSage"
+        "command": "DebugBuddy.reviewCurrentFile",
+        "title": "Review Current File with DebugBuddy"
       },
       {
-        "command": "CodeSage.showWebview",
-        "title": "Show CodeSage Webview"
+        "command": "DebugBuddy.showWebview",
+        "title": "Show DebugBuddy Webview"
       },
       {
-        "command": "CodeSage.hideWebview",
-        "title": "Hide CodeSage Webview"
+        "command": "DebugBuddy.hideWebview",
+        "title": "Hide DebugBuddy Webview"
       },
       {
-        "command": "CodeSage.refreshWebview",
-        "title": "Refresh CodeSage Webview"
+        "command": "DebugBuddy.refreshWebview",
+        "title": "Refresh DebugBuddy Webview"
       },
       {
-        "command": "CodeSage.clearWebview",
-        "title": "Clear CodeSage Webview"
+        "command": "DebugBuddy.clearWebview",
+        "title": "Clear DebugBuddy Webview"
       },
       {
-        "command": "CodeSage.showWebviewHistory",
-        "title": "Show CodeSage Webview History"
+        "command": "DebugBuddy.showWebviewHistory",
+        "title": "Show DebugBuddy Webview History"
       },
       {
-        "command": "CodeSage.webviewHealthCheck",
-        "title": "CodeSage Webview Health Check"
+        "command": "DebugBuddy.webviewHealthCheck",
+        "title": "DebugBuddy Webview Health Check"
       },
       {
-        "command": "CodeSage.showErrorLog",
-        "title": "Show CodeSage Error Log"
+        "command": "DebugBuddy.showErrorLog",
+        "title": "Show DebugBuddy Error Log"
+      },
+      {
+        "command": "DebugBuddy.showPromptConfiguration",
+        "title": "Show DebugBuddy Prompt Configuration"
+      },
+      {
+        "command": "DebugBuddy.openPromptSettings",
+        "title": "Open DebugBuddy Prompt Settings"
+      },
+      {
+        "command": "DebugBuddy.validatePromptConfiguration",
+        "title": "Validate DebugBuddy Prompt Configuration"
       }
     ],
     "menus": {
       "editor/context": [
         {
           "when": "editorTextFocus",
-          "command": "CodeSage.reviewCurrentFile",
+          "command": "DebugBuddy.reviewCurrentFile",
           "group": "navigation"
         }
       ],
       "commandPalette": [
         {
-          "command": "CodeSage.showWebview",
+          "command": "DebugBuddy.showWebview",
           "when": "true"
         },
         {
-          "command": "CodeSage.hideWebview",
+          "command": "DebugBuddy.hideWebview",
           "when": "true"
         },
         {
-          "command": "CodeSage.refreshWebview",
+          "command": "DebugBuddy.refreshWebview",
           "when": "true"
         },
         {
-          "command": "CodeSage.clearWebview",
+          "command": "DebugBuddy.clearWebview",
           "when": "true"
         },
         {
-          "command": "CodeSage.showWebviewHistory",
+          "command": "DebugBuddy.showWebviewHistory",
           "when": "true"
         },
         {
-          "command": "CodeSage.webviewHealthCheck",
+          "command": "DebugBuddy.webviewHealthCheck",
           "when": "true"
         }
       ]
     },
     "configuration": {
-      "title": "CodeSage",
+      "title": "DebugBuddy",
       "properties": {
-        "CodeSage.apiKey": {
+        "DebugBuddy.apiKey": {
           "type": "string",
           "default": "",
-          "description": "API key for CodeSage AI explanations",
+          "description": "API key for DebugBuddy AI explanations",
           "scope": "application"
         },
-        "CodeSage.model": {
+        "DebugBuddy.model": {
           "type": "string",
           "default": "",
           "description": "AI model to use for explanations",
           "scope": "application"
         },
-        "CodeSage.useWebview": {
+        "DebugBuddy.useWebview": {
           "type": "boolean",
           "default": true,
           "description": "Enable/disable webview for AI responses"
         },
-        "CodeSage.webviewPosition": {
+        "DebugBuddy.webviewPosition": {
           "type": "string",
-          "enum": ["beside", "active", "one", "two", "three"],
+          "enum": [
+            "beside",
+            "active",
+            "one",
+            "two",
+            "three"
+          ],
           "default": "beside",
           "description": "Position where webview should open"
         },
-        "CodeSage.webviewRetainContext": {
+        "DebugBuddy.webviewRetainContext": {
           "type": "boolean",
           "default": true,
           "description": "Keep webview content when hidden"
         },
-        "CodeSage.webviewAutoShow": {
+        "DebugBuddy.webviewAutoShow": {
           "type": "boolean",
           "default": true,
           "description": "Automatically show webview when AI responses are generated"
+        },
+        "DebugBuddy.prompts.experienceLevel": {
+          "type": "string",
+          "enum": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ],
+          "default": "intermediate",
+          "description": "Experience level for AI responses (affects complexity and explanation depth)"
+        },
+        "DebugBuddy.prompts.maxSuggestions": {
+          "type": "number",
+          "default": 5,
+          "minimum": 1,
+          "maximum": 20,
+          "description": "Maximum number of suggestions to include in AI responses"
+        },
+        "DebugBuddy.prompts.includeExplanations": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include detailed explanations in AI responses"
+        },
+        "DebugBuddy.prompts.customFocusAreas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Custom focus areas for code analysis (e.g., 'performance', 'security', 'readability')"
+        },
+        "DebugBuddy.prompts.outputVerbosity": {
+          "type": "string",
+          "enum": [
+            "minimal",
+            "standard",
+            "detailed"
+          ],
+          "default": "standard",
+          "description": "Verbosity level for AI responses"
+        },
+        "DebugBuddy.prompts.enablePromptSystem": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the JSON prompt system for structured AI interactions"
+        },
+        "DebugBuddy.prompts.directory": {
+          "type": "string",
+          "default": "",
+          "description": "Custom directory path for additional prompt templates (relative to workspace root)"
+        },
+        "DebugBuddy.prompts.cachePrompts": {
+          "type": "boolean",
+          "default": true,
+          "description": "Cache loaded prompt templates for better performance"
+        },
+        "DebugBuddy.prompts.configs": {
+          "type": "object",
+          "default": {},
+          "description": "Configuration settings for individual prompt templates",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "default": true
+              },
+              "priority": {
+                "type": "number",
+                "default": 1
+              },
+              "customSettings": {
+                "type": "object",
+                "default": {}
+              },
+              "overrides": {
+                "type": "object",
+                "default": {}
+              }
+            }
+          }
+        },
+        "DebugBuddy.prompts.configVersion": {
+          "type": "string",
+          "default": "1.0.0",
+          "description": "Internal configuration version for migration purposes"
         }
       }
     }
@@ -160,7 +264,7 @@
     "watch:esbuild": "node esbuild.js --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
     "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
-    "compile-tests": "tsc -p . --outDir out",
+    "compile-tests": "tsc -p . --outDir out && cp -r src/prompt/templates/*.json out/prompt/templates/",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
     "check-types": "tsc --noEmit",
@@ -171,7 +275,7 @@
     "@types/highlight.js": "^10.1.0",
     "@types/markdown-it": "^14.1.2",
     "@types/mocha": "^10.0.10",
-    "@types/node": "20.x",
+    "@types/node": "^20.19.9",
     "@types/vscode": "^1.102.0",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
@@ -187,8 +291,11 @@
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.12",
     "@ai-sdk/google": "^1.2.22",
+    "@ai-sdk/groq": "^2.0.2",
     "@ai-sdk/openai": "^1.3.23",
     "@ai-sdk/xai": "^1.2.18",
-    "ai": "^4.3.19"
+    "ai": "^4.3.19",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
   }
 }

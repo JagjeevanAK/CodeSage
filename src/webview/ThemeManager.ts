@@ -240,7 +240,7 @@ export class ThemeManager implements IThemeManager {
             try {
                 callback(theme);
             } catch (error) {
-                console.error('CodeSage: Error in theme change callback:', error);
+                console.error('DebugBuddy: Error in theme change callback:', error);
             }
         });
     }

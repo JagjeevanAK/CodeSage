@@ -115,7 +115,7 @@ suite('Edge Cases and Error Scenarios Tests', () => {
         
         // Mock configuration change event
         const mockEvent: vscode.ConfigurationChangeEvent = {
-          affectsConfiguration: (section: string) => section === 'CodeSage.apiKey'
+          affectsConfiguration: (section: string) => section === 'DebugBuddy.apiKey'
         };
         
         // Trigger configuration change
@@ -183,7 +183,7 @@ suite('Edge Cases and Error Scenarios Tests', () => {
         // Simulate rapid configuration changes
         const changes = ['key-1', 'key-2', 'key-3', 'key-4', 'key-5'];
         const mockEvent: vscode.ConfigurationChangeEvent = {
-          affectsConfiguration: (section: string) => section === 'CodeSage.apiKey'
+          affectsConfiguration: (section: string) => section === 'DebugBuddy.apiKey'
         };
         
         for (const newKey of changes) {
@@ -225,7 +225,7 @@ suite('Edge Cases and Error Scenarios Tests', () => {
         assert.strictEqual(result1, 'initial-key');
         
         const mockEvent: vscode.ConfigurationChangeEvent = {
-          affectsConfiguration: (section: string) => section === 'CodeSage.apiKey'
+          affectsConfiguration: (section: string) => section === 'DebugBuddy.apiKey'
         };
         
         // Rapid changes between defined and undefined
@@ -279,7 +279,7 @@ suite('Edge Cases and Error Scenarios Tests', () => {
         assert.strictEqual(result1, 'stable-key');
         
         const mockEvent: vscode.ConfigurationChangeEvent = {
-          affectsConfiguration: (section: string) => section === 'CodeSage.apiKey'
+          affectsConfiguration: (section: string) => section === 'DebugBuddy.apiKey'
         };
         
         // Simulate rapid changes with intermittent errors
@@ -325,7 +325,7 @@ suite('Edge Cases and Error Scenarios Tests', () => {
         assert.strictEqual(result1, 'concurrent-test-key');
         
         const mockEvent: vscode.ConfigurationChangeEvent = {
-          affectsConfiguration: (section: string) => section === 'CodeSage.apiKey'
+          affectsConfiguration: (section: string) => section === 'DebugBuddy.apiKey'
         };
         
         // Simulate sequential configuration changes (more predictable than concurrent)
@@ -517,7 +517,7 @@ suite('Edge Cases and Error Scenarios Tests', () => {
         
         // Trigger configuration change immediately after restart
         const mockEvent: vscode.ConfigurationChangeEvent = {
-          affectsConfiguration: (section: string) => section === 'CodeSage.apiKey'
+          affectsConfiguration: (section: string) => section === 'DebugBuddy.apiKey'
         };
         
         configChangeHandler.onConfigurationChanged(mockEvent);
@@ -622,7 +622,7 @@ suite('Edge Cases and Error Scenarios Tests', () => {
         
         // Simulate rapid configuration changes from undefined to defined
         const mockEvent: vscode.ConfigurationChangeEvent = {
-          affectsConfiguration: (section: string) => section === 'CodeSage.apiKey'
+          affectsConfiguration: (section: string) => section === 'DebugBuddy.apiKey'
         };
         
         const rapidChanges = [

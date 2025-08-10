@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { WebviewProvider, IWebviewProvider } from './WebviewProvider';
 import { ThemeManager } from './ThemeManager';
 import { WebviewErrorLogger } from './WebviewErrorLogger';
-import { displayReview } from '../helper/terminalDisplay';
 
 export interface WebviewContent {
     fileName: string;
@@ -259,16 +258,26 @@ export class WebviewManager implements IWebviewManager {
     private fallbackToTerminal(content: string, fileName: string): void {
         try {
             // Log fallback usage
-            console.warn('CodeSage: Using terminal fallback for content display');
+            console.warn('DebugBuddy: Using terminal fallback for content display');
             
-            // Use the existing terminal display function with fallback flag
-            displayReview({ text: content }, fileName);
+            // Direct terminal display without calling displayReview to avoid circular dependency
+            const { DebugBuddyOutputChannel } = require('../helper/cannel');
+            
+            DebugBuddyOutputChannel.clear();
+            DebugBuddyOutputChannel.appendLine('DebugBuddy Code Review\n');
+            DebugBuddyOutputChannel.appendLine(`File: ${fileName}`);
+            DebugBuddyOutputChannel.appendLine(`Analyzed: ${new Date().toLocaleString()}\n`);
+            DebugBuddyOutputChannel.appendLine('---\n');
+            DebugBuddyOutputChannel.appendLine(content);
+            DebugBuddyOutputChannel.appendLine('\n---');
+            DebugBuddyOutputChannel.appendLine('\nNote: Displayed in terminal due to webview issues. Check error log for details.');
+            DebugBuddyOutputChannel.show(true);
             
             // Show user notification about fallback (only once per session)
             if (!this.hasShownFallbackNotification) {
                 this.hasShownFallbackNotification = true;
                 vscode.window.showWarningMessage(
-                    'CodeSage: Using terminal display due to webview issues. Check the error log for details.',
+                    'DebugBuddy: Using terminal display due to webview issues. Check the error log for details.',
                     'Show Error Log',
                     'Don\'t Show Again'
                 ).then(selection => {
@@ -289,7 +298,7 @@ export class WebviewManager implements IWebviewManager {
             
             // Show a critical error message to user
             vscode.window.showErrorMessage(
-                'CodeSage: Failed to display response in both webview and terminal. Check the output panel for details.',
+                'DebugBuddy: Failed to display response in both webview and terminal. Check the output panel for details.',
                 'Show Error Log',
                 'Reset Extension'
             ).then(selection => {
@@ -317,13 +326,13 @@ export class WebviewManager implements IWebviewManager {
     }
 
     private temporarilyDisableWebview(): void {
-        console.warn('CodeSage: Temporarily disabling webview due to critical error');
+        console.warn('DebugBuddy: Temporarily disabling webview due to critical error');
         this.fallbackEnabled = false;
         
         // Re-enable after 30 seconds
         setTimeout(() => {
             this.fallbackEnabled = true;
-            console.log('CodeSage: Webview re-enabled after temporary disable');
+            console.log('DebugBuddy: Webview re-enabled after temporary disable');
         }, 30000);
     }
 
@@ -341,10 +350,10 @@ export class WebviewManager implements IWebviewManager {
                 this.initialize(this.context);
             }
             
-            vscode.window.showInformationMessage('CodeSage: Webview system has been reset');
+            vscode.window.showInformationMessage('DebugBuddy: Webview system has been reset');
         } catch (resetError) {
             this.errorLogger.logError('resetWebviewSystem', resetError as Error, false, {});
-            vscode.window.showErrorMessage('CodeSage: Failed to reset webview system');
+            vscode.window.showErrorMessage('DebugBuddy: Failed to reset webview system');
         }
     }
 

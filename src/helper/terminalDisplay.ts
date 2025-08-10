@@ -1,64 +1,64 @@
-import { CodeSageOutputChannel } from "./cannel";
+import { DebugBuddyOutputChannel } from "./cannel";
 import { webviewManager } from "../webview/WebviewManager";
 
 import { vscode } from "./vscode";
 
-export const displayReview = (reviewResponse: any, fileName: any) => {
-    const config = vscode.workspace.getConfiguration('CodeSage');
+export const displayReview = (reviewResponse: any, fileName: any, skipWebview: boolean = false) => {
+    const config = vscode.workspace.getConfiguration('DebugBuddy');
     const useWebview = config.get<boolean>('useWebview', true);
     const autoShow = config.get<boolean>('webviewAutoShow', true);
     
     // Validate input parameters
     if (!reviewResponse || typeof reviewResponse.text !== 'string') {
-        console.error('CodeSage: Invalid review response provided to displayReview');
-        CodeSageOutputChannel.appendLine('Error: Invalid review response received');
-        CodeSageOutputChannel.show(true);
+        console.error('DebugBuddy: Invalid review response provided to displayReview');
+        DebugBuddyOutputChannel.appendLine('Error: Invalid review response received');
+        DebugBuddyOutputChannel.show(true);
         return;
     }
 
     if (!fileName || typeof fileName !== 'string') {
-        console.error('CodeSage: Invalid fileName provided to displayReview');
+        console.error('DebugBuddy: Invalid fileName provided to displayReview');
         fileName = 'Unknown file';
     }
 
-    // Try to use webview first if enabled and available
-    if (useWebview && autoShow) {
+    // Try to use webview first if enabled and available (and not explicitly skipped)
+    if (useWebview && autoShow && !skipWebview) {
         try {
             // Use the enhanced fallback mechanism
             webviewManager.displayResponseWithFallback(reviewResponse.text, fileName);
             return;
         } catch (error) {
-            console.error('CodeSage: Failed to display in webview with fallback, using terminal:', error);
+            console.error('DebugBuddy: Failed to display in webview with fallback, using terminal:', error);
             // Fall through to terminal display
         }
     }
 
     // Terminal display (fallback or explicitly requested)
     try {
-        CodeSageOutputChannel.clear();
-        CodeSageOutputChannel.appendLine('CodeSage Code Review\n');
-        CodeSageOutputChannel.appendLine(`File: ${fileName}`);
-        CodeSageOutputChannel.appendLine(`Analyzed: ${new Date().toLocaleString()}\n`);
-        CodeSageOutputChannel.appendLine('---\n');
-        CodeSageOutputChannel.appendLine(reviewResponse.text);
-        CodeSageOutputChannel.appendLine('\n---');
+        DebugBuddyOutputChannel.clear();
+        DebugBuddyOutputChannel.appendLine('DebugBuddy Code Review\n');
+        DebugBuddyOutputChannel.appendLine(`File: ${fileName}`);
+        DebugBuddyOutputChannel.appendLine(`Analyzed: ${new Date().toLocaleString()}\n`);
+        DebugBuddyOutputChannel.appendLine('---\n');
+        DebugBuddyOutputChannel.appendLine(reviewResponse.text);
+        DebugBuddyOutputChannel.appendLine('\n---');
         
-        if (useWebview) {
-            CodeSageOutputChannel.appendLine('\nNote: Displayed in terminal due to webview issues. Check error log for details.');
+        if (useWebview && !skipWebview) {
+            DebugBuddyOutputChannel.appendLine('\nNote: Displayed in terminal due to webview issues. Check error log for details.');
         }
 
-        CodeSageOutputChannel.show(true);
+        DebugBuddyOutputChannel.show(true);
     } catch (terminalError) {
-        console.error('CodeSage: Critical error - even terminal display failed:', terminalError);
+        console.error('DebugBuddy: Critical error - even terminal display failed:', terminalError);
         // Last resort: show error message
         const vscode = require('vscode');
         vscode.window.showErrorMessage(
-            'CodeSage: Critical display error. Unable to show review results.',
+            'DebugBuddy: Critical display error. Unable to show review results.',
             'Show in New Document'
         ).then((selection: string) => {
             if (selection === 'Show in New Document') {
                 vscode.workspace.openTextDocument({
-                    content: `CodeSage Code Review\n\nFile: ${fileName}\nAnalyzed: ${new Date().toLocaleString()}\n\n${reviewResponse.text}`,
+                    content: `DebugBuddy Code Review\n\nFile: ${fileName}\nAnalyzed: ${new Date().toLocaleString()}\n\n${reviewResponse.text}`,
                     language: 'markdown'
                 }).then((doc: any) => {
                     vscode.window.showTextDocument(doc);

@@ -1,3 +1,3 @@
 import { vscode } from "./vscode";
 
-export const CodeSageOutputChannel = vscode.window.createOutputChannel("CodeSage");
+export const DebugBuddyOutputChannel = vscode.window.createOutputChannel("DebugBuddy");

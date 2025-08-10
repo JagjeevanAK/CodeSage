@@ -41,7 +41,7 @@ class ApiKeyCacheService implements ApiKeyCache {
     try {
       return this.apiKey;
     } catch (error) {
-      console.error('CodeSage: Error accessing cached API key:', error);
+      console.error('DebugBuddy: Error accessing cached API key:', error);
       throw new Error(`Cache access failed: ${error}`);
     }
   }
@@ -56,7 +56,7 @@ class ApiKeyCacheService implements ApiKeyCache {
       this.apiKey = key;
       this.initialized = true;
     } catch (error) {
-      console.error('CodeSage: Error setting API key in cache:', error);
+      console.error('DebugBuddy: Error setting API key in cache:', error);
       throw new Error(`Cache update failed: ${error}`);
     }
   }
@@ -70,7 +70,7 @@ class ApiKeyCacheService implements ApiKeyCache {
       this.apiKey = undefined;
       this.initialized = false;
     } catch (error) {
-      console.error('CodeSage: Error clearing API key cache:', error);
+      console.error('DebugBuddy: Error clearing API key cache:', error);
       throw new Error(`Cache clear failed: ${error}`);
     }
   }
@@ -84,7 +84,7 @@ class ApiKeyCacheService implements ApiKeyCache {
     try {
       return this.initialized;
     } catch (error) {
-      console.error('CodeSage: Error checking cache initialization state:', error);
+      console.error('DebugBuddy: Error checking cache initialization state:', error);
       throw new Error(`Cache initialization check failed: ${error}`);
     }
   }
